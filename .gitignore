@@ -1,0 +1,13 @@
+### Mac
+.DS_Store
+
+### IntelliJ
+.idea/
+*.iml
+*.ipr
+
+### Maven
+target/
+
+### Tests
+src/test/resources/unit/dblock-bin

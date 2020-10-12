@@ -1,0 +1,31 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.ryarnyah.unit</groupId>
+    <artifactId>project-to-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>Test Backwards Compatibility Mojo</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.ryarnyah</groupId>
+                <artifactId>dblock-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <database-type>POSTGRES</database-type>
+                    <database-schema-regex>public</database-schema-regex>
+                    <database-conn-info>host=localhost port=5432 user=postgres dbname=test sslmode=disable password=postgres</database-conn-info>
+                    <database-lock-file>.dblock.lock</database-lock-file>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>backwards-compatibility-check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
