@@ -1,36 +1,39 @@
 language: java
-
+cache:
+  directories:
+  - $HOME/.m2
 jdk:
 - openjdk11
-
-env:
-  global:
-  - secure: XpARxfHcI/kp1Zq1yPib9tJ6FmeQ+kdJmSINcWAG245j7whmDS7IhjmP7Ek5io8HV302bKL7q35hp7kq/0Pq4M0dQQuBklHqosKPI/fnQJw/LHcaf0cnhNvh7FFGHUl7dqetlsrpzPaSkM0PVUT4rpxg1a/4yyNtDHSak/NtHtD3Vn3ik2o5RJ7AyJxLrmOHagDbWStUtLUKe874grIOZJnEU/D5rYOxbozg4+MrEmTuyuanxlsL6N8sqOH1cD+IQR0O+Z3gvOR3BNc/vXlfjBrK4kwcUnjIp7OuRaKi1GmknwmtZ1sfdYt0zMsn3Tu61QjN6ctujZ/u2ka0PGV4E4UCw1tNmTk2TW8EBfVP0KCeXxPkyn+fZYJ3EXcb1NYKjtDKiuQyYKtO4zCa2piIApotJX7GJJ3d15XAYrcK5URpyhws9vXToUOnV4WpGiE1bl775UAlmjNfQLfT+tPyn+5j0nKnaWlwpSr5WsVqPKPq3L0NWuZKsitMa/XYlormmIKJWUlKtfI04PuuT/Ls522F/GqTroqhsAKx8lgu07XPyOPhPizXMOygTyhbO57c18Lbqk7kwuhVS3zWw3TMXVoyYaDWnz6P9NhlCMPFY7l+mebGJo2JFT77THD93m/IuvDnSMTogEzDYlzXyAB2Vw0LwgWpepTX0Wgv0O3sNMM=
-  - secure: SpRpXUOVdaEEXv2tkvWXsybCb8s4QCj9GObW3suo7oB5bWGSdb0vcqLUDMDplLCzJ9PFeVk7NJT3Z1eSHtOVLPw0Ci1zFtQ+jnF0NmKPyvNJ/l1NKFIdAGm8yyVQv7WtEsyKt791CEf9REK//bSHz84XozN9jRbTwDhlHZJd+xCXYf8SqhOBBh7GL96f/77UFgr3zQsoH8w86izJR3K3XHThPDW00aWkjJ6lHtu/xr/a3ONViLmRuJ401hJb0K8kAxP8QRU3i2JBv9y6g7y4S6nKS7BRgLS6W1GQQI/kxQ0piLA5gw9/Km/q44M+W11o2iTd3kKJ4dg6iU408s0ginovNJzLnHuHkElmomdVbq6VOPGm3hKLaHFdBwp3Z3arI3y3W65htEp8/lZrXO36siMJNou13sUw8dUwJfnvKKEyL+WwEbHdIOLpqMXX0oEH5kzCGlGgmGTx+ahZAIen3C+nBqR+IApA1FVDWt4XRrwSquBd5UxtL9Fme6nCd/UGVzs8i/u/4gug8A5msVAvKmMxHeAEJwb783wzxG2W0eN6KcWdAncgLVsjv2It556Jm59ukiRk0zJZhy+f2kIlxOf36ZXxBWx+eKyxJwFmvl8OBARp14XcRx1/2N2AD1K13WGNOMnetP9qDNV+ST7CjQ9NjTDM0KjXypFKKAzbFfc=
-  - secure: ESKiFZQLdv7kTd8SdQ6k1BYx8hp5vbkuG3BKdUoCT70RYCM3HJfmnNeZxK/An749OzUCEBDnKy/OHNvYdWAPfMabgnIKIDgGoBUZdLL0Ls58CwIAJbneDvFtcmWKTqqoY2HVIIt5g7FHc2ygwfY+BaiKnpLAUfs5uOvlV9su7g5xTOxazqeM0hSeY9IZdR8N9aijKxzZReonFp/HPGfRBIAfnvH0sz6rvDkvrjc8u8/E3e9CM7YXAJkS/M2tsdEtC2In3A8SP2dHDa7J6Zy1bmdaaFnWJfwEkT98jL6xKfXClq6VUWlkls4J27Ee6Et7m3r9buKW4u8vlMHAwpf1Mux3IbLZRM6vDkkCezNABHVOSu3pfJB5XlYM/Cme2pPcXXghoJnloT+MGvOPHJ8dXTl7E+PXcNvl2EYIlQn3Yy1RTJWsR03RkV61UVaLwHGPimAkkv8JYIMNFizLVJCnLzI4p7NS/nDfticEUGUV5jKyp05/VIL41wtKFmdKEbjzA8QCzQPt1nWDQc2cGKUoTYuCdQVSYhEhH+cZnDpiynbl8F07pPr455ObChlyEHK+6QnE0jRXOTtfp1NlVPsdvpq49DgXG6oXBIzwpPquHAWtacKadVli9NLW6AEQ6buxKTQeMJK9JzVeb1RIgSF9V5rLHhKHft7g8LADBygzaAA=
-
-before_install:
-- openssl aes-256-cbc -K $encrypted_3fe773eb19e5_key -iv $encrypted_3fe773eb19e5_iv
-  -in .deploy/signingkey.asc.enc -out .deploy/signingkey.asc -d
-
+before_deploy:
+- "[ ! -z $TRAVIS_TAG ] && mvn org.codehaus.mojo:versions-maven-plugin:2.8.1:set -DnewVersion=$TRAVIS_TAG
+  || echo 'Not a tag'\n"
 deploy:
+- provider: script
+  script: gpg --always-trust --yes --keyring=$TRAVIS_BUILD_DIR/pubring.gpg --no-default-keyring
+    --import .deploy/signingkey.asc && gpg --always-trust --yes --allow-secret-key-import
+    --keyring=$TRAVIS_BUILD_DIR/secring.gpg --no-default-keyring --import .deploy/signingkey-secret.asc
+    && mvn -Prelease clean deploy -DskipTests=true --settings .deploy/settings.xml
+    -Dgpg.executable=gpg -Dgpg.keyname=24BE3A89827E43FC9703B1E0E83BBBBB0FA0D0BD -Dgpg.passphrase=$PASSPHRASE
+    -Dgpg.publicKeyring=$TRAVIS_BUILD_DIR/pubring.gpg -Dgpg.secretKeyring=$TRAVIS_BUILD_DIR/secring.gpg
+  on:
+    condition: ($TRAVIS_BRANCH == "master" || -n $TRAVIS_TAG)
+    all_branches: true
+  skip_cleanup: 'true'
 - provider: releases
   api_key:
     secure: l7qYbclU1wACGYWwZxl9LME35tRZHIgSsXdoq+yLJHPG44AMgzxf/dQTZexarxjGs2HEuKXP9e3qNhs27wqLp83pDbak/b6/BAHnfwNpz7hVOUZGtlQv0tYpduaNBwTF02CYI8sCfLDdN3KJF97yWpt3rfGN4JWopC+9vdugtBLGwvM3XXOxk4Rrtx6RpC7W95hkrOKOzMdJ/9uOPnniB/hQElIsGVTkGO7GjHfmEOFHuXA+CVDhD63SHnMc1SlWf/NXr5I3JssoaDY7gY3wpEy5W6+nGiGo3muqi/G/ya9UEyGI1y/8/5zXd8CH/hEj26U1hootUNsPg/wdyhZiamwoI4N6xH7pqdSzynqEjtni+4gliPf1v0yfFtcO5624jc2pwlHTc8STqN35Lh0EDSqNu87dMuj7H/aV+IN1E3vi9yL7rMu82FK+iLNSE7WsGNxbC01bcU3Xf/QpDjTOU1Km+u3leoSrDInfOcWUXaausmz4/I0Qng7LfisIKnL9gqo8sz7R97fH/i8UY5oLr1VlZptyjM5Vcl8t4jUprx/iPFToy/bKcagDZpKTjOwct9zmF/x2w9OcjUEGb1nf1dvvraXk3fX6Oe4la8t8c6C7wEyBnU5GXzI2wRcT11Nw6PI18Hy39swyIGaOvF2mby72grgot5zv9uK24karTWQ=
   file:
   - target/dblock-maven-plugin-$TRAVIS_TAG.jar
-  - target/dblock-maven-plugin-$TRAVIS_TAG-javadoc.jar
   - target/dblock-maven-plugin-$TRAVIS_TAG-sources.jar
+  - target/dblock-maven-plugin-$TRAVIS_TAG-javadoc.jar
   on:
     tags: true
   skip_cleanup: 'true'
-- provider: script
-  script:
-  - [ ! -z "$TRAVIS_TAG" ] && mvn --settings .deploy/settings.xml org.codehaus.mojo:versions-maven-plugin:2.8.1:set -DnewVersion=$TRAVIS_TAG
-  - gpg2 --keyring=$TRAVIS_BUILD_DIR/pubring.gpg --no-default-keyring --import .deploy/signingkey.asc
-  - gpg2 --allow-secret-key-import --keyring=$TRAVIS_BUILD_DIR/secring.gpg --no-default-keyring --import .deploy/signingkey.asc
-  - mvn clean deploy --settings .deploy/settings.xml -Dgpg.executable=gpg2 -Dgpg.keyname=24BE3A89827E43FC9703B1E0E83BBBBB0FA0D0BD -Dgpg.passphrase=$PASSPHRASE -Dgpg.publicKeyring=$TRAVIS_BUILD_DIR/pubring.gpg -Dgpg.secretKeyring=$TRAVIS_BUILD_DIR/secring.gpg
-  on:
-    tags: true
-    branch: master
-  skip_cleanup: 'true'
+env:
+  global:
+  - secure: OXKmfo217LFzW7vB/B9byBX89HNI4qZ6qIdjrwwqiIepqCZlKMF+Rtizd7U5T3736v7Ojk3LeZsEZAtWq8X4pmpeegZyo43rifzdmpsXkag3vxHc8l4vPlgWSnGF3Pz6PQU5QOJ7fZD6TV7QXLSl+M09Mzcd5pftF+TbB/zgN5IaKbdmQ6NiMzLbwlAVG9bGbaY06cmyOKtHgBNGzhGPjj/eKw8wfV7t00XjgxJI4ZTg67NBc6lMv9eNiSDrxEKl8u7JZSy/vj9Pg908szDGxXhCNV6h+dvUBgAqVsm/MTJQUw9ua3ju1NeXU+Bx2u611aGSrTLdfoLmTID+VS5IAbbKVFN7LdVOnnVhA1P1h8nx2uZgr6fdIi6gFXsQ/ZQVxgYdp7OpTQPC7Yn9sB80lBI9pl7CWag/LKX0M1CA7bMpi62GialWasQj/O39CVHYbi+T0vUTBu2hKiEjLnxTEQCaFzWqhZd9yZwhT2lWxpL3fvmRbuevDpmD+69SyfLbKmuFvB+WVUCvXTIeNdnOCqtszSkQwpAIJP6GtSm53mNeKqjWYadYbxryj2KR8DWfciVQwXVj+aJH9/gOyBNjYUwxGE+2VokhiL8eh2KFNi7jFsUStkjmmEP4ssfA2hF9V9XCAQD9S2IA2Jj0MbbuY5yVxttTb2uJ1zhMz2xrWm8=
+  - secure: LJo0Rw2lKyKIu4mt1lGorE0V5pzj3/3G6XmuABiai70XI4ZPqVsRdtlOhMk6ugKN9uIl7UPG+KfWCF4X3iQHCFQxTPTrmjCo8qYu9jhnMBpSnsRVJLYrdKRHsFXDSkJSqqcwRNucck5yoJP7YZvTKKu8XpGXmsD7z19aMCCX7uGbO/Au67J7fDa+N0vNaf5vQ+5ivK9PwxkyzEBpsWYcI9taIDu3sRnFdBe9S2TZFP03zChixXCrH74UFX7fPG5JwwexwIBqD9HQi2MxsmkLJ/Qwn6TKYkTStRVFzeBAwkxOeXkmgOm6W9yrJaKKaE2tO0djvcMaxQp+KIOGwjR/SaGf0fS67+ao0ofmGOi6IEaCd4Dl1cX0XA98nOPJtrDTKuMwg44JgLFZ56/lBu37PC8yUs6E41Tb9//b3xak0n/7tl66MD4iGmF5uV9yfLkr9esH+1b2v/uLjKYiyNjdWrBCQGWLWMi165VkNiZIj9VmKRd2ms51BxAd/EXdi34Occ6z0pPgGA/uxIFF0Avr5CIAHgcvD6/P1/QwnKBfyAt+mNZRgcWArDzeZuyeu2EfC/Jx+//MRG/bDkxWUWyElMZ+NxqKgc+OmymwGzw0/bzrUSE5R1UNO2GIDJEDCcOk/fMGe6RURe4mToSjU7nBOMN1pgpeqfyorkvoMsyygCI=
+  - secure: fZSQXM8KeTz+YwFxFzD98JN3CfStIdq8bKtg1Bgz8jQyVl1qTl/NGRSbNuBFOC9qmx6ZD8VcYOSpzuUvu+vFWUIGjLdZmgO7FpZcd7E1FhJbOTdbn4AJE3zA3/PhcFBnGgoegZKAjq+dniV2OWzxI6wi3UJbzL0eJG9RP8cLJu4QaHGe6ab93RLYDe1Zb0c114hm8XxdaDUEdYGU5wfcylHieTDiyaVtEXODBIOOEYh3IgadiRszN5NqEfvOlIhJm29tY6Qp8B31WBu2vDHI/N/oq7e2EQdSyqDFdaDdIjU2eLP9RvWg5106bDu104GDXXAC42ObtJ/WzKf+ETYzef3DUvz4oYw3P8ZKG3CLVAc/mzXRKGld4uxxx+GR0ebYh/MydZUSxoA37dBE4nDMnZHAMPI7VLRNd2oI+Z4ZtJIibMIBu6KLNz6v8UwJvODFuhNJbou6Z99wPoFbwiREIbc257teiJWeFMu1nOK+61sfirpoKcWS2qORsQ2VvGU5I80uEna7kVodnheqyg6bVuLg5JAD8TnuUZyNsoikBWdkhuxo/foqDnSiBNd66y90blDOywlT600GB7hZYLNAmeVZiWXVpf4O4VGd6d7iHB3Zk/KCtSCc9sK3LYNcR407AGsb3CWboBkvx3mhYcbip65Yh8HcOf+B03C9Crh2CcQ=
+before_install:
+- openssl aes-256-cbc -K $encrypted_502ebcc54c5d_key -iv $encrypted_502ebcc54c5d_iv
+  -in .deploy/signingkey-secret.asc.enc -out .deploy/signingkey-secret.asc -d

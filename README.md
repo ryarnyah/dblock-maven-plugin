@@ -26,7 +26,7 @@ https://github.com/ryarnyah/dblock/blob/master/README.md
         <plugin>
             <groupId>com.github.ryarnyah</groupId>
             <artifactId>dblock-maven-plugin</artifactId>
-            <version>0.1.0</version>
+            <version>1.0.0</version>
             <configuration>
                 <database-type>POSTGRES</database-type>
                 <database-schema-regex>public</database-schema-regex>
