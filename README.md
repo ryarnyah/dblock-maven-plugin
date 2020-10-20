@@ -28,10 +28,10 @@ https://github.com/ryarnyah/dblock/blob/master/README.md
             <artifactId>dblock-maven-plugin</artifactId>
             <version>1.0.0</version>
             <configuration>
-                <database-type>POSTGRES</database-type>
-                <database-schema-regex>public</database-schema-regex>
-                <database-conn-info>host=localhost port=5432 user=postgres dbname=test sslmode=disable password=postgres</database-conn-info>
-                <database-lock-file>.dblock.lock</database-lock-file>
+                <databaseType>POSTGRES</databaseType>
+                <databaseSchemaRegex>public</databaseSchemaRegex>
+                <databaseConnInfo>host=localhost port=5432 user=postgres dbname=test sslmode=disable password=postgres</databaseConnInfo>
+                <databaseLockFile>.dblock.lock</databaseLockFile>
             </configuration>
             <executions>
                 <execution>
@@ -47,7 +47,7 @@ https://github.com/ryarnyah/dblock/blob/master/README.md
 
 ## Configuration
 
-* `<database-type>` (default to `POSTGRES`) - must be a value of `POSTGRES`, `MYSQL`, `MSSQL`.
-* `<database-schema-regex>` (default to `.*`) - regex to match schema(s) to check.
-* `<database-conn-info>` (empty) - Database connetion info (See https://github.com/ryarnyah/dblock/blob/master/README.md for format)
-* `<database-lock-file>` (default to `db.lock`) - File path to lock file.
+* `<databaseType>` (default to `POSTGRES`) - must be a value of `POSTGRES`, `MYSQL`, `MSSQL`.
+* `<databaseSchemaRegex>` (default to `.*`) - regex to match schema(s) to check.
+* `<databaseConnInfo>` (empty) - Database connetion info (See https://github.com/ryarnyah/dblock/blob/master/README.md for format)
+* `<databaseLockFile>` (default to `db.lock`) - File path to lock file.

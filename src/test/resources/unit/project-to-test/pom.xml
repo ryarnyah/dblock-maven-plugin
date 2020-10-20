@@ -13,10 +13,10 @@
                 <artifactId>dblock-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
-                    <database-type>POSTGRES</database-type>
-                    <database-schema-regex>public</database-schema-regex>
-                    <database-conn-info>host=localhost port=5432 user=postgres dbname=test sslmode=disable password=postgres</database-conn-info>
-                    <database-lock-file>.dblock.lock</database-lock-file>
+                    <databaseType>POSTGRES</databaseType>
+                    <databaseSchemaRegex>public</databaseSchemaRegex>
+                    <databaseConnInfo>host=localhost port=5432 user=postgres dbname=test sslmode=disable password=postgres</databaseConnInfo>
+                    <databaseLockFile>.dblock.lock</databaseLockFile>
                 </configuration>
                 <executions>
                     <execution>
