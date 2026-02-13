@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/ryarnyah/dblock-maven-plugin.svg?branch=master)](https://travis-ci.org/ryarnyah/dblock-maven-plugin) 
 
-DBLock Version: [0.4.0](https://github.com/ryarnyah/dblock/releases/tag/0.4.0)
+DBLock Version: [0.4.5](https://github.com/ryarnyah/dblock/releases/tag/0.4.5)
 
 # DBLock Backwards Compatibility Check Maven Plugin
 
